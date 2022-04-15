@@ -1,4 +1,5 @@
 using System.Text;
+using BeatLeader.Manager;
 using BeatLeader.Models;
 using BeatSaberMarkupLanguage.Attributes;
 using JetBrains.Annotations;
@@ -20,6 +21,8 @@ namespace BeatLeader.Components {
         #region SetScore
 
         public void SetScore(Score score) {
+            _score = score;
+
             _playerAvatar.SetAvatar(score.player.avatar);
             _countryFlag.SetCountry(score.player.country);
 
@@ -207,6 +210,8 @@ namespace BeatLeader.Components {
 
         #endregion
 
+        private Score _score;
+
         #region DetailsText
 
         private string _detailsText = "";
@@ -222,5 +227,12 @@ namespace BeatLeader.Components {
         }
 
         #endregion
+
+        [UIAction("replay-on-click"), UsedImplicitly]
+        private void ReplayOnClick()
+        {
+            if (_score == null) return;
+            LeaderboardEvents.NotifyScoreReplayButtonWasPressed(_score);
+        }
     }
 }

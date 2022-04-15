@@ -15,6 +15,7 @@ namespace BeatLeader.DataManager {
         private IDifficultyBeatmap _lastSelectedBeatmap;
 
         private Coroutine _scoresTask;
+        private Coroutine _replayTask;
 
         #region Initialize/Dispose section
 
@@ -23,6 +24,8 @@ namespace BeatLeader.DataManager {
 
             LeaderboardEvents.ScopeWasSelectedAction += ChangeScoreProvider;
             LeaderboardEvents.ContextWasSelectedAction += ChangeScoreContext;
+
+            LeaderboardEvents.ScoreReplayButtonWasPressed += ReplaySelection;
 
             LeaderboardEvents.UpButtonWasPressedAction += FetchPreviousPage;
             LeaderboardEvents.AroundButtonWasPressedAction += SeekAroundMePage;
@@ -34,6 +37,8 @@ namespace BeatLeader.DataManager {
 
             LeaderboardEvents.ScopeWasSelectedAction -= ChangeScoreProvider;
             LeaderboardEvents.ContextWasSelectedAction -= ChangeScoreContext;
+
+            LeaderboardEvents.ScoreReplayButtonWasPressed -= ReplaySelection;
 
             LeaderboardEvents.UpButtonWasPressedAction -= FetchPreviousPage;
             LeaderboardEvents.AroundButtonWasPressedAction -= SeekAroundMePage;
@@ -137,6 +142,22 @@ namespace BeatLeader.DataManager {
 
                 LoadScores();
             }
+        }
+
+        #endregion
+
+        #region Select score context
+
+        private void ReplaySelection(Score score)
+        {
+            if (_replayTask != null)
+            {
+                StopCoroutine(_replayTask);
+            }
+
+            _replayTask = StartCoroutine(HttpUtils.DownloadReplay(score.replay, 1, (Replay result) => {
+                Plugin.Log.Critical($"Downloaded replay of [{result.info.playerID}] for [{result.info.songName}-{result.info.difficulty}]");
+            }));
         }
 
         #endregion

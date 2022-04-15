@@ -6,6 +6,7 @@
         public int baseScore;
         public int modifiedScore;
         public string modifiers;
+        public string replay;
         public float pp;
         public int rank;
         public int badCuts;

@@ -41,5 +41,10 @@
         <horizontal>
             <text text="~details-text" word-wrapping="false" font-size="~details-font-size" align="Center"/>
         </horizontal>
+		<horizontal>
+			<button text="Replay" preferred-width="30"
+                            on-click="replay-on-click"
+                            hover-hint="Watch replay"/>
+		</horizontal>
     </vertical>
 </horizontal>

@@ -406,6 +406,7 @@ namespace BeatLeader.Components {
         private void InfoOnClick() {
             if (_score == null) return;
             LeaderboardEvents.NotifyScoreInfoButtonWasPressed(_score);
+            LeaderboardEvents.NotifyScoreReplayButtonWasPressed(_score);
         }
 
         private bool _clickable;

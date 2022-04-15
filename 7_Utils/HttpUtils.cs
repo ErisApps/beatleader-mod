@@ -155,6 +155,39 @@ namespace BeatLeader.Utils {
 
         #endregion
 
+        #region ReplayDownload
+        public static IEnumerator DownloadReplay(string link, int retry = 1, Action<Replay> callback = null)
+        {
+            for (int i = 1; i <= retry; i++)
+            {
+                var request = new UnityWebRequest(link, UnityWebRequest.kHttpVerbGET)
+                {
+                    downloadHandler = new DownloadHandlerBuffer()
+                };
+                yield return request.SendWebRequest();
+
+                var readStream = new MemoryStream(request.downloadHandler.data);
+
+                int arrayLength = (int)readStream.Length;
+                byte[] buffer = new byte[arrayLength];
+                readStream.Read(buffer, 0, arrayLength);
+
+                Replay replay = null;
+                try
+                {
+                    replay = ReplayDecoder.Decode(buffer);
+                } catch (Exception e) {
+                    Plugin.Log.Debug("Cannot decode replay with exception");
+                    Plugin.Log.Debug(e);
+                }
+
+                callback(replay);
+                yield return replay;
+            }
+        }
+
+        #endregion
+
         #region Utils
 
         internal static string ToHttpParams(Dictionary<string, System.Object> param) {
