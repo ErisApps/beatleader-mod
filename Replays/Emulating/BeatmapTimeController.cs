@@ -50,12 +50,7 @@ namespace BeatLeader.Replays.Emulating
 
             _beatmapCallbacksControllerInitData.SetField("startFilterTime", time);
             _beatmapCallbacksController.SetField("_startFilterTime", time);
-            _beatmapCallbacksController.SetField("_prevSongTime", float.MinValue);
-            var beatmapEvents = _beatmapCallbacksController.GetField<Dictionary<float, CallbacksInTime>, BeatmapCallbacksController>("_callbacksInTimes");
-            foreach (var item in beatmapEvents)
-            {
-                item.Value.lastProcessedNode = null;
-            }
+
             _audioTimeSyncController.SetField("_prevAudioSamplePos", -1);
             _audioTimeSyncController.SeekTo(time / _audioTimeSyncController.timeScale);
 

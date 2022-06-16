@@ -206,6 +206,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="0_Harmony\InstallersPatches\BeatmapCallbacksControllerPatch.cs" />
     <Compile Include="0_Harmony\RecorderPatches\RecorderCustomCampaignUtilPatch.cs" />
     <Compile Include="0_Harmony\UIPatches\BSMLAddonsPatch.cs" />
     <Compile Include="0_Harmony\HarmonyHelper.cs" />
